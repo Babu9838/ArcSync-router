@@ -1,0 +1,93 @@
+{
+  "appName": "ARC Unified Dashboard",
+  "theme": {
+    "background": "#0b0f1a",
+    "card": "#151d33",
+    "text": "#ffffff",
+    "accent": "#4f8cff"
+  },
+  "wallet": {
+    "enabled": true,
+    "supportedWallets": ["MetaMask"],
+    "features": ["connect", "disconnect", "addressDisplay"]
+  },
+  "chains": [
+    {
+      "name": "ARC Testnet",
+      "chainId": "0x4E476A",
+      "rpc": "https://rpc.testnet.arc.network",
+      "nativeToken": "ETH"
+    },
+    {
+      "name": "Sepolia",
+      "chainId": "0xaa36a7",
+      "rpc": "https://sepolia.infura.io/v3/",
+      "nativeToken": "ETH"
+    },
+    {
+      "name": "Arbitrum Sepolia",
+      "chainId": "0x66eee",
+      "rpc": "https://arb-sepolia.rpc",
+      "nativeToken": "ETH"
+    }
+  ],
+  "tokens": [
+    {
+      "symbol": "USDC",
+      "type": "ERC20",
+      "enabled": true
+    },
+    {
+      "symbol": "EURC",
+      "type": "ERC20",
+      "enabled": true
+    },
+    {
+      "symbol": "CIRBTC",
+      "type": "ERC20",
+      "enabled": true
+    }
+  ],
+  "modules": {
+    "transfer": {
+      "enabled": true,
+      "types": ["native", "erc20"],
+      "supportsTokens": ["USDC", "EURC", "CIRBTC"]
+    },
+    "swap": {
+      "enabled": true,
+      "provider": "dex-plug-in",
+      "supportedTokens": ["USDC", "EURC", "CIRBTC"]
+    },
+    "bridge": {
+      "enabled": true,
+      "supportedTokens": ["USDC", "EURC", "CIRBTC"]
+    },
+    "liquidity": {
+      "enabled": true,
+      "actions": ["add", "remove"],
+      "supportedTokens": ["USDC", "EURC", "CIRBTC"]
+    },
+    "stake": {
+      "enabled": true,
+      "supportedTokens": ["USDC", "EURC", "CIRBTC"]
+    }
+  },
+  "transaction": {
+    "explorer": "https://testnet.arcscan.app/tx/",
+    "tracking": true
+  },
+  "social": {
+    "enabled": true,
+    "providers": ["twitter", "discord", "wallet-signin"]
+  },
+  "ui": {
+    "layout": "grid",
+    "cardsPerRow": 2,
+    "logo": "/arc-logo.png"
+  },
+  "security": {
+    "walletRequired": true,
+    "networkValidation": true
+  }
+}
