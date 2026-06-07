@@ -1,0 +1,179 @@
+# ArcSync-router
+ArcSync - Smart value router MVP on Arc. A simple web app that routes transaction accross chain. 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>ARC Unified Dashboard</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial;
+  background: #0b0f1a;
+  color: white;
+}
+
+header {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #11182a;
+}
+
+button {
+  padding: 10px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+  padding: 20px;
+}
+
+.card {
+  background: #151d33;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin: 5px 0;
+}
+
+.logo {
+  font-size: 20px;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">⚡ ARC DASHBOARD</div>
+  <button onclick="connectWallet()">Connect Wallet</button>
+</header>
+
+<div class="container">
+
+  <!-- WALLET -->
+  <div class="card">
+    <h3>Wallet</h3>
+    <p id="wallet">Not connected</p>
+
+    <select onchange="switchChain(this.value)">
+      <option value="0x4E476A">ARC Testnet</option>
+      <option value="0xaa36a7">Sepolia</option>
+      <option value="0x66eee">Arbitrum Sepolia</option>
+    </select>
+  </div>
+
+  <!-- TRANSFER -->
+  <div class="card">
+    <h3>Token Transfer</h3>
+    <input id="to" placeholder="Receiver Address" />
+    <input id="amount" placeholder="Amount (ETH style)" />
+    <button onclick="sendToken()">Send</button>
+  </div>
+
+  <!-- SWAP -->
+  <div class="card">
+    <h3>Swap (UI)</h3>
+    <input placeholder="From Token (USDC/EURC/CIRBTC)" />
+    <input placeholder="To Token" />
+    <button>Swap (Hook DEX later)</button>
+  </div>
+
+  <!-- BRIDGE -->
+  <div class="card">
+    <h3>Bridge</h3>
+    <button>Bridge USDC / EURC / CIRBTC</button>
+  </div>
+
+  <!-- LIQUIDITY -->
+  <div class="card">
+    <h3>Liquidity</h3>
+    <button>Add Liquidity</button>
+    <button>Remove Liquidity</button>
+  </div>
+
+  <!-- STAKE -->
+  <div class="card">
+    <h3>Stake</h3>
+    <button>Stake Tokens</button>
+    <button>Unstake</button>
+  </div>
+
+  <!-- TX CHECK -->
+  <div class="card">
+    <h3>Transaction Checker</h3>
+    <input id="tx" placeholder="Tx Hash" />
+    <button onclick="checkTx()">Check</button>
+  </div>
+
+  <!-- SOCIAL -->
+  <div class="card">
+    <h3>Social Connect</h3>
+    <button>Connect Twitter</button>
+    <button>Connect Discord</button>
+  </div>
+
+</div>
+
+<script>
+// Wallet connect
+async function connectWallet() {
+  if (!window.ethereum) return alert("Install MetaMask");
+
+  const accounts = await window.ethereum.request({
+    method: "eth_requestAccounts"
+  });
+
+  document.getElementById("wallet").innerText =
+    "Connected: " + accounts[0];
+}
+
+// Chain switch
+async function switchChain(chainId) {
+  try {
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId }]
+    });
+  } catch (e) {
+    alert("Chain switch failed");
+  }
+}
+
+// Send token (native transfer demo)
+async function sendToken() {
+  const to = document.getElementById("to").value;
+  const amount = document.getElementById("amount").value;
+
+  const tx = await window.ethereum.request({
+    method: "eth_sendTransaction",
+    params: [{
+      to,
+      value: (BigInt(amount * 1e18)).toString(16)
+    }]
+  });
+
+  alert("TX: " + tx);
+}
+
+// Tx checker
+function checkTx() {
+  const tx = document.getElementById("tx").value;
+  window.open("https://testnet.arcscan.app/tx/" + tx);
+}
+</script>
+
+</body>
+</html>
